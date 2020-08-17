@@ -87,3 +87,16 @@ textarea {
     color: #16C0B0;
     text-decoration: underline;
 }
+
+.outOfStock {
+    text-decoration: line-through;
+}
+
+.btn-block {
+    display: flex;
+    flex-direction: row;
+}
+
+.btn-block button {
+    margin-left: 8px;
+}

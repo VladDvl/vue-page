@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="nav-bar"></div>
-    
+
     <div id="app">
 
         <div class="product">
@@ -23,9 +23,14 @@
                 <h1>{{product}}</h1>
                 <p>{{description}}</p>
 
-                <p v-if="inventory > 10">In stock</p>
-                <p v-else-if="inventory <= 10 && inventory > 0">Almost sold out!</p>
-                <p v-else>Out of stock</p>
+                <p v-if="inventory > 10 && inStock">In stock</p>
+                <p v-else-if="inventory <= 10 && inventory > 0 && inStock">Almost sold out!</p>
+                <p
+                    v-else
+                    :class="{outOfStock: !inStock}"
+                >
+                    Out of stock
+                </p>
 
                 <span v-show="onSale">On Sale</span>
 
@@ -34,15 +39,12 @@
                 </ul>
 
                 <div
+                    class="color-box"
                     v-for="variant in variants"
                     :key="variant.variantId"
-                >
-                    <p
-                        @mouseover="updateProduct(variant.variantImage)"
-                    >
-                        {{variant.variantColor}}
-                    </p>
-                </div>
+                    :style="{backgroundColor: variant.variantColor}"
+                    @mouseover="updateProduct(variant.variantImage)"
+                ></div>
 
                 <ul>
                     <li v-for="size in sizes">{{size}}</li>
@@ -51,9 +53,21 @@
                 <div class="cart">
                     <p>Cart({{cart}})</p>
                 </div>
-
-                <button v-on:click="addToCart">Add to cart</button>
-                <button v-on:click="removeFromCart">Remove from cart</button>
+                <div class="btn-block">
+                <button 
+                    v-on:click="addToCart"
+                    :disabled="!inStock"
+                    :class="{disabledButton: !inStock}"
+                >
+                    Add to cart
+                </button>
+                <button
+                    v-on:click="removeFromCart"
+                    :disabled="!inStock || cart < 1"
+                    :class="{disabledButton: !inStock || cart < 1}"
+                >
+                    Remove from cart
+                </button></div>
             </div>
 
             <a 
