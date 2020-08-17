@@ -3,7 +3,8 @@ Vue.component('product', {
         premium: {
             type: Boolean,
             required: true
-        }
+        },
+        cart: []
     },
     template: 
         `<div class="product">
@@ -44,9 +45,6 @@ Vue.component('product', {
                     <li v-for="size in sizes">{{size}}</li>
                 </ul>
 
-                <div class="cart">
-                    <p>Cart({{cart}})</p>
-                </div>
                 <div class="btn-block">
                     <button 
                         v-on:click="addToCart"
@@ -57,8 +55,8 @@ Vue.component('product', {
                     </button>
                     <button
                         v-on:click="removeFromCart"
-                        :disabled="!inStock || cart < 1"
-                        :class="{disabledButton: !inStock || cart < 1}"
+                        :disabled="!inStock || cart.length < 1"
+                        :class="{disabledButton: !inStock || cart.length < 1}"
                     >
                         Remove from cart
                     </button>
@@ -97,18 +95,14 @@ Vue.component('product', {
                 }
             ],
             sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-            cart: 0
             }
         },
     methods: {
         addToCart() {
-            this.cart += 1;
+            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId);
         },
         removeFromCart() {
-            this.cart -= 1;
-            if (this.cart < 1) {
-                this.cart = 0;
-            }
+            this.$emit('remove-from-cart', this.variants[this.selectedVariant].variantId);
         },
         updateProduct(index) {
             this.selectedVariant = index;
@@ -163,6 +157,16 @@ Vue.component('product-details', {
 var app = new Vue({
     el: '#app',
     data: {
-        premium: true
+        premium: true,
+        cart: []
+    },
+    methods: {
+        addToCart(id) {
+            this.cart.push(id);
+        }
+        ,
+        removeFromCart(id) {
+            this.cart.pop(id);
+        }
     }
 });
