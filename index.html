@@ -3,12 +3,34 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Product App</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 <body>
     
     <div id="app">
-        <h1>{{product}}</h1>
-        <p>{{description}}</p>
+
+        <div class="product">
+
+            <div class="product-image">
+                <img 
+                    v-bind:src="image"
+                    v-bind:alt="altText"
+                />
+            </div>
+
+            <div class="product-info">
+                <h1>{{product}}</h1>
+                <p>{{description}}</p>
+            </div>
+
+            <a 
+                v-bind:href="link"
+            >
+                More products like this.
+            </a>
+
+        </div>
+
     </div>
     
     <script src="https://unpkg.com/vue"></script>
